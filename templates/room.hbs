@@ -44,6 +44,8 @@
         light="defaultLightsEnabled: false">
 
         <a-assets>
+            <a-asset-item id="teleport" src="assets/audio/teleport.wav" response-type="arraybuffer"></a-asset-item>
+            <a-asset-item id="teleportAim" src="assets/audio/teleportAim.wav" response-type="arraybuffer"></a-asset-item>
             <a-asset-item id="bot-head-mesh" response-type="arraybuffer" src="{{asset "assets/avatars/Bot_Head_Mesh.glb" }}"></a-asset-item>
             <a-asset-item id="bot-body-mesh" response-type="arraybuffer" src="{{asset "assets/avatars/Bot_Body_Mesh.glb" }}"></a-asset-item>
             <a-asset-item id="bot-left-hand-mesh" response-type="arraybuffer" src="{{asset "assets/avatars/Bot_LeftHand_Mesh.glb" }}"></a-asset-item>
@@ -125,6 +127,8 @@
             spawn-controller="radius: 4;"
             wasd-to-analog2d
             character-controller="pivot: #head"
+            sound__teleport="src: #teleport; on: teleport; poolSize: 3"
+            sound__teleportAim="src: #teleportAim; on: action_teleport_down; poolSize: 3"
         >
             <a-entity
                 id="head"
