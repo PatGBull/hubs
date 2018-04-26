@@ -406,7 +406,7 @@ const onReady = async () => {
     // If ?room is set, this is `yarn start`, so just use a default environment and query string room.
     setRoom(qs.room || "default");
     initialEnvironmentEl.setAttribute("gltf-bundle", {
-      src: DEFAULT_ENVIRONMENT_URL
+      src: qs.environment || DEFAULT_ENVIRONMENT_URL
     });
     return;
   }
