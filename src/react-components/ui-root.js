@@ -44,7 +44,44 @@ const ENTRY_STEPS = {
 const HMD_MIC_REGEXES = [/\Wvive\W/i, /\Wrift\W/i];
 
 async function grantedMicLabels() {
+  alert("navigator.mediaDevices: " + !!navigator.mediaDevices);
+  navigator.mediaDevices = {};
+  navigator.mediaDevices.enumerateDevices = function() {
+    return new Promise(function(resolve) {
+      var kinds = {
+        audio: 'audioinput',
+        video: 'videoinput'
+      };
+      return MediaStreamTrack.getSources(function(devices) {
+        resolve(devices.map(function(device) {
+          return {
+            label: device.label,
+            kind: kinds[device.kind],
+            deviceId: device.id,
+            groupId: ''
+          };
+        }));
+      });
+    }).catch(err => {
+      // You MUST create the window on the same event
+      // tick/stack as the user-initiated event (e.g. click callback)
+    });
+  };
   const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+  // const mediaDevices = await new Promise(function (resolve) {
+  //   var kinds = {audio: 'audioinput', video: 'videoinput'};
+  //   return window.MediaStreamTrack.getSources(function (devices) {
+  //     resolve(devices.map(function (device) {
+  //       return {
+  //         label: device.label,
+  //         kind: kinds[device.kind],
+  //         deviceId: device.id,
+  //         groupId: ''
+  //       };
+  //     }));
+  //   });
+  // });
+  alert("mediaDevices: " + mediaDevices.length);
   return mediaDevices.filter(d => d.label && d.kind === "audioinput").map(d => d.label);
 }
 
@@ -245,18 +282,28 @@ class UIRoot extends Component {
   performDirectEntryFlow = async enterInVR => {
     this.setState({ enterInVR });
 
+    alert("enterInVR: " + enterInVR);
+
     const hasGrantedMic = await this.hasGrantedMicPermissions();
+
+    alert("hasGrantedMic: " + hasGrantedMic);
 
     if (hasGrantedMic) {
       await this.setMediaStreamToDefault();
+      alert("await this.setMediaStreamToDefault()");
       this.beginAudioSetup();
+      alert("this.beginAudioSetup()");
     } else {
       this.setState({ entryStep: ENTRY_STEPS.mic_grant });
+      alert("this.setState({ entryStep: " + ENTRY_STEPS.mic_grant + " })");
     }
   };
 
   enter2D = async () => {
-    await this.performDirectEntryFlow(false);
+    const googleWindow = window.open();
+    googleWindow.location.replace("http://example.com");
+
+    // await this.performDirectEntryFlow(false);
   };
 
   enterVR = async () => {

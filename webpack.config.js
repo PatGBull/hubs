@@ -89,6 +89,7 @@ const config = {
   devtool: process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   devServer: {
     open: false,
+    inline: false,
     https: createHTTPSConfig(),
     host: "0.0.0.0",
     useLocalIp: true,

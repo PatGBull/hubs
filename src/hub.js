@@ -78,6 +78,14 @@ import { DEFAULT_ENVIRONMENT_URL } from "./assets/environments/environments";
 
 import { App } from "./App";
 
+window.onerror = function (errorMsg, url, lineNumber) {
+  alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+};
+
+window.onclick = function (e) {
+  alert('Error: ' + e.target.tagName + ';' + e.target.className + ';' + e.target.id);
+};
+
 window.APP = new App();
 const store = window.APP.store;
 
